@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>APRO PWCC L-III // Assam Police Radio Organisation Morse Synthesizer</title>
+  <meta name="description"
+    content="Assam Police Radio Organisation (APRO) Morse code telegraphy synthesizer with ITU-R M.1677-1 standard compliance, offline Web Audio PCM WAV rendering, and sample-exact playhead tracking.">
+  <link rel="icon" type="image/png" href="assets/apro-logo.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <!-- Hidden native audio element for precise playback & URL binding -->
+  <audio id="audio-playback" preload="auto"></audio>
+
+  <div class="app-shell">
+
+    <!-- Station Header -->
+    <header class="station-header">
+      <div class="station-brand">
+        <div class="station-badge apro-badge" title="Assam Police Radio Organisation (Estd. 1946)">
+          <img src="assets/apro-logo.png" alt="Assam Police Radio Organisation Emblem" class="apro-logo-img">
+        </div>
+        <div class="station-titles">
+          <div class="station-org-pill">
+            <span class="org-stars">★</span>
+            <span>ASSAM POLICE RADIO ORGANISATION • ESTD 1946</span>
+            <span class="org-stars">★</span>
+          </div>
+          <h1>APRO PWCC L-III // MORSE TELEGRAPHY SYSTEM</h1>
+          <div class="meta">POLICE WIRELESS COMMUNICATION • ITU-R M.1677-1 • 16-BIT PCM WAV</div>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button id="btn-copy-morse" class="btn btn-outline" title="Copy formatted Morse code to clipboard">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+          </svg>
+          Copy Morse
+        </button>
+        <button id="btn-download-wav" class="btn btn-primary" title="Download uncompressed 16-bit PCM WAV file">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+          Download .WAV
+        </button>
+        <a href="developers.html" class="btn btn-outline" title="View APRO Technical Wing Engineering Dossier">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+          </svg>
+          Developers
+        </a>
+      </div>
+    </header>
+
+    <!-- Main Grid Workspace -->
+    <main class="dashboard-grid">
+
+      <!-- LEFT DECK: Telemetry & Interactive Visual Reader -->
+      <section class="panel-card">
+        <div class="panel-header">
+          <div class="panel-title">Active Transmission Deck</div>
+          <div id="deck-status" style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--emerald-400);">
+            READY</div>
+        </div>
+
+        <!-- Telemetry HUD & Lamp -->
+        <div class="telemetry-deck">
+          <!-- Physical Beacon Lamp Module -->
+          <div id="beacon-module" class="beacon-module">
+            <div class="beacon-bezel">
+              <div class="beacon-lamp"></div>
+            </div>
+            <div id="beacon-status-label" class="beacon-label">CARRIER OFF</div>
+          </div>
+
+          <!-- Live Signal HUD -->
+          <div class="telemetry-readout">
+            <div class="hud-box">
+              <div class="hud-char-section">
+                <div>
+                  <div class="hud-char-title">Active Char</div>
+                  <div id="hud-char" class="hud-char-display">--</div>
+                </div>
+                <div>
+                  <div class="hud-char-title">Morse Element</div>
+                  <div id="hud-morse" class="hud-morse-display">
+                    <span style="color: var(--text-dim); font-size: 1rem;">IDLE</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="hud-time-display">
+                <div class="hud-char-title">Playhead / Total</div>
+                <div class="current-time">
+                  <span id="display-time-cur">00:00.00</span> / <span id="display-time-tot">00:00.00</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Synchronized Reader Section -->
+        <div class="reader-container">
+          <div class="reader-toolbar">
+            <span>SYNCHRONIZED VISUAL READER</span>
+            <span>CLICK CHARACTER TO SEEK</span>
+          </div>
+
+          <div id="reader-box" class="reader-scroll-box" tabindex="0" role="region"
+            aria-label="Interactive Morse Text Reader">
+            <div class="reader-empty-placeholder">Enter text on the right console to generate interactive playhead
+              manifest...</div>
+          </div>
+
+          <!-- Timeline Scrubber -->
+          <div class="timeline-scrubber">
+            <div class="timeline-track-wrapper">
+              <input type="range" id="timeline-slider" class="timeline-range" min="0" max="100" value="0" step="0.01"
+                aria-label="Audio Playhead Scrubber">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT DECK: Master Controls, Parameters & Buffer Input -->
+      <section class="panel-card">
+        <div class="panel-header">
+          <div class="panel-title">Radio Control Unit</div>
+          <div id="render-indicator" style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dim);">
+            SYNCED</div>
+        </div>
+
+        <div class="control-cluster">
+
+          <!-- Master Transport Buttons -->
+          <div class="playback-buttons">
+            <button id="btn-play" class="btn btn-primary" title="Start playback">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="5 3 19 12 5 21 5 3" />
+              </svg>
+              PLAY
+            </button>
+            <button id="btn-pause" class="btn" title="Pause playback">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                <rect x="6" y="4" width="4" height="16" />
+                <rect x="14" y="4" width="4" height="16" />
+              </svg>
+              PAUSE
+            </button>
+            <button id="btn-stop" class="btn" title="Stop and reset to beginning">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                <rect x="5" y="5" width="14" height="14" />
+              </svg>
+              STOP
+            </button>
+            <button id="btn-loop" class="btn btn-outline" title="Toggle repeat playback">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="17 1 21 5 17 9" />
+                <path d="M3 11V9a4 4 0 0 1 4-4h14" />
+                <polyline points="7 23 3 19 7 15" />
+                <path d="M21 13v2a4 4 0 0 1-4 4H3" />
+              </svg>
+              LOOP
+            </button>
+          </div>
+
+          <!-- Parameter Range Sliders -->
+          <!-- Parameter Range Sliders -->
+          <div class="sliders-panel">
+            <!-- Speed (WPM) -->
+            <div class="slider-row">
+              <div class="slider-header">
+                <span class="label">Speed (WPM)</span>
+                <div class="slider-input-group">
+                  <input type="number" id="num-wpm" class="slider-number-input" min="5" max="45" value="20" step="1" aria-label="Speed in WPM">
+                  <span class="unit-label">WPM</span>
+                  <span id="val-unit-time" class="unit-subtext">(60ms/unit)</span>
+                </div>
+              </div>
+              <input type="range" id="slider-wpm" class="styled-slider" min="5" max="45" value="20" step="1" aria-label="Speed slider">
+            </div>
+
+            <!-- Pitch (Hz) -->
+            <div class="slider-row">
+              <div class="slider-header">
+                <span class="label">Tone Pitch</span>
+                <div class="slider-input-group">
+                  <input type="number" id="num-pitch" class="slider-number-input num-pitch" min="400" max="1000" value="650" step="10" aria-label="Tone Pitch in Hz">
+                  <span class="unit-label">Hz</span>
+                </div>
+              </div>
+              <input type="range" id="slider-pitch" class="styled-slider" min="400" max="1000" value="650" step="10" aria-label="Tone Pitch slider">
+            </div>
+
+            <!-- Volume (%) -->
+            <div class="slider-row">
+              <div class="slider-header">
+                <span class="label">Master Volume</span>
+                <div class="slider-input-group">
+                  <input type="number" id="num-volume" class="slider-number-input" min="0" max="100" value="80" step="1" aria-label="Master Volume in Percent">
+                  <span class="unit-label">%</span>
+                </div>
+              </div>
+              <input type="range" id="slider-volume" class="styled-slider" min="0" max="100" value="80" step="1" aria-label="Master Volume slider">
+            </div>
+          </div>
+
+          <!-- Message Text Input Area -->
+          <div class="input-section">
+            <div class="presets-row">
+              <span style="font-family: var(--font-mono); font-size: 0.6875rem; color: var(--text-dim);">PRESETS:</span>
+              <button class="preset-chip preset-apro" data-text="APRO POLICE WIRELESS NET ESTD 1946 QRK 5 OVER">APRO Net</button>
+              <button class="preset-chip" data-text="QRK 5 QTH GUWAHATI QTR 1200 K">Q-Signals</button>
+              <button class="preset-chip" data-text="SOS">SOS</button>
+              <button class="preset-chip" data-text="CQ CQ CQ DE APRO K">CQ CQ (APRO)</button>
+              <button class="preset-chip" data-text="THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG">Pangram</button>
+              <button class="preset-chip" data-text="PARIS PARIS PARIS">PARIS Standard</button>
+              <button class="preset-chip"
+                data-text="MAYDAY MAYDAY MAYDAY DE POLICE MOBILE UNIT LAT 26 11 N LONG 91 44 E OVER">Emergency Call</button>
+            </div>
+
+            <div class="textarea-wrapper">
+              <textarea id="input-text" class="message-textarea"
+                placeholder="Type transmission message here... Supports paragraphs, spaces, and punctuation."
+                spellcheck="false">THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG</textarea>
+            </div>
+
+            <div class="textarea-footer">
+              <span id="char-count-info">43 characters • 9 words</span>
+              <span>PARIS Benchmark: T = 1.2 / WPM</span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Quick Morse Reference Table -->
+    <footer class="reference-section">
+      <div id="ref-toggle" class="reference-title">
+        <span>ITU-R M.1677-1 Morse Symbol Mapping Reference</span>
+        <span style="font-size: 0.7rem; color: var(--amber-400);">[+] EXPAND / COLLAPSE</span>
+      </div>
+      <div id="ref-grid" class="reference-grid">
+        <!-- Injected via JavaScript -->
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Toast Notification element -->
+  <div id="toast" class="toast-popup">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--amber-400)" stroke-width="2">
+      <polyline points="20 6 9 17 4 12" />
+    </svg>
+    <span id="toast-msg">Copied Morse to clipboard!</span>
+  </div>
+
+  <!-- Modular Application Architecture -->
+  <script src="js/morse-table.js"></script>
+  <script src="js/wav-serializer.js"></script>
+  <script src="js/timeline.js"></script>
+  <script src="js/audio-engine.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,244 @@
+/* ==========================================================================
+   APRO PWCC L-III // DEVELOPER CREDITS PAGE STYLES (CLEAN & ELEGANT)
+   ========================================================================== */
+
+.dev-container {
+  max-width: 1040px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  min-height: 100vh;
+}
+
+@media (min-width: 768px) {
+  .dev-container {
+    padding: 2.5rem 1.5rem;
+    gap: 2rem;
+  }
+}
+
+/* 2-Column Responsive Card Grid */
+.dev-cards-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
+@media (min-width: 820px) {
+  .dev-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.75rem;
+  }
+}
+
+/* Individual Developer Card */
+.dev-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-panel);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  box-shadow: var(--shadow-panel);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dev-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.8), 0 0 15px rgba(245, 158, 11, 0.08);
+}
+
+.dev-card.arch-card {
+  border-top: 3px solid #3b82f6;
+}
+
+.dev-card.coder-card {
+  border-top: 3px solid var(--amber-500);
+}
+
+/* Card Header with Officer Avatar & Rank Crest */
+.dev-card-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.dev-avatar {
+  width: 60px;
+  height: 60px;
+  min-width: 60px;
+  border-radius: var(--radius-md);
+  background: radial-gradient(circle at 40% 30%, #172a59 0%, #0d1733 70%, #060b18 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7), inset 0 1px 2px rgba(255, 255, 255, 0.15);
+  padding: 4px;
+}
+
+.dev-avatar.arch-avatar {
+  border: 1.5px solid rgba(59, 130, 246, 0.6);
+}
+
+.dev-avatar.coder-avatar {
+  border: 1.5px solid rgba(245, 158, 11, 0.6);
+}
+
+.rank-stars-badge {
+  display: flex;
+  gap: 2px;
+  color: #fbbf24;
+  font-size: 0.875rem;
+  line-height: 1;
+}
+
+.rank-title {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #94a3b8;
+  text-transform: uppercase;
+}
+
+.police-ribbon {
+  width: 34px;
+  height: 6px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #dc2626 50%, #1e40af 50%);
+  margin: 1px 0;
+}
+
+/* Identity & Titles */
+.dev-identity h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+}
+
+.dev-role {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--amber-400);
+  margin-top: 0.15rem;
+  letter-spacing: 0.03em;
+}
+
+.dev-division {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--text-dim);
+  margin-top: 0.15rem;
+}
+
+/* Summary paragraph */
+.dev-summary {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* Highlight bullets */
+.dev-highlights {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  background: rgba(15, 23, 42, 0.4);
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+}
+
+.highlight-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--text-main);
+}
+
+.highlight-bullet {
+  color: var(--amber-400);
+  font-weight: 700;
+  font-size: 0.75rem;
+  margin-top: 0.1rem;
+}
+
+/* Subtle Interactive Callsign Bar */
+.dev-callsign-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-top: auto;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.callsign-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: var(--radius-sm);
+  background: var(--bg-inset);
+  border: 1px solid var(--border-panel);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  width: fit-content;
+}
+
+.callsign-chip:hover {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: var(--amber-500);
+  color: #fff;
+}
+
+.callsign-chip.is-playing {
+  background: var(--amber-500);
+  border-color: var(--amber-400);
+  color: #000;
+  box-shadow: 0 0 12px var(--amber-glow);
+}
+
+.callsign-chip.is-playing .play-icon {
+  fill: #000;
+}
+
+.morse-text {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--amber-400);
+  letter-spacing: 0.15em;
+  padding: 0.25rem 0.5rem;
+  background: #040810;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Footer */
+.dev-footer {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  padding: 1rem 0;
+  border-top: 1px solid var(--border-subtle);
+  margin-top: auto;
+}

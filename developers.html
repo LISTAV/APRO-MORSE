@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Developer Credits // APRO PWCC L-III</title>
+  <meta name="description"
+    content="Developer credits for the APRO PWCC L-III Morse Telegraphy System: Inspector Madhurjya (System Architect) and ASI Himangshu (Coder).">
+  <link rel="icon" type="image/png" href="assets/apro-logo.png">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="developers.css">
+</head>
+
+<body>
+
+  <div class="dev-container">
+
+    <!-- Station Header -->
+    <header class="station-header">
+      <div class="station-brand">
+        <a href="index.html" class="station-badge apro-badge" title="Return to Morse Synthesizer">
+          <img src="assets/apro-logo.png" alt="Assam Police Radio Organisation Emblem" class="apro-logo-img">
+        </a>
+        <div class="station-titles">
+          <div class="station-org-pill">
+            <span class="org-stars">★</span>
+            <span>ASSAM POLICE RADIO ORGANISATION • ESTD 1946</span>
+            <span class="org-stars">★</span>
+          </div>
+          <h1>DEVELOPER CREDITS</h1>
+          <div class="meta">APRO PWCC L-III TELEGRAPHY SYSTEM • ENGINEERING TEAM</div>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <a href="index.html" class="btn btn-outline" title="Return to Morse Synthesizer">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+          Morse Console
+        </a>
+      </div>
+    </header>
+
+    <!-- Developer Profile Cards -->
+    <main class="dev-cards-grid">
+
+      <!-- Inspector Madhurjya (System Architect) -->
+      <article class="dev-card arch-card">
+        <div class="dev-card-header">
+          <div class="dev-avatar arch-avatar">
+            <div class="rank-stars-badge">
+              <span>★</span><span>★</span><span>★</span>
+            </div>
+            <span class="rank-title">INSPECTOR</span>
+          </div>
+          <div class="dev-identity">
+            <h2>Inspector Madhurjya</h2>
+            <div class="dev-role">System Architect</div>
+            <div class="dev-division">APRO Training School, Jalukbari</div>
+          </div>
+        </div>
+
+        <p class="dev-summary">
+          Conceived and gave the idea for the app.
+        </p>
+
+        <div class="dev-highlights">
+          <div class="highlight-item">
+            <span class="highlight-bullet">▸</span>
+            <span>Conceived the original idea and concept for the app</span>
+          </div>
+          <div class="highlight-item">
+            <span class="highlight-bullet">▸</span>
+            <span>Project guidance & operational requirements</span>
+          </div>
+        </div>
+
+        <div class="dev-callsign-bar">
+          <button id="btn-callsign-madhurjya" class="callsign-chip" title="Play Morse Callsign">
+            <svg class="play-icon" width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5 3 19 12 5 21 5 3" />
+            </svg>
+            <span class="chip-label">Callsign: <strong>INSP MADHURJYA</strong></span>
+          </button>
+          <span id="morse-madhurjya" class="morse-text">.. -. ... .--. -- .- -.. .... ..- .-. .--- -.-- .-</span>
+        </div>
+      </article>
+
+      <!-- ASI Himangshu (Coder) -->
+      <article class="dev-card coder-card">
+        <div class="dev-card-header">
+          <div class="dev-avatar coder-avatar">
+            <div class="rank-stars-badge">
+              <span style="font-size: 1.15rem;">★</span>
+            </div>
+            <div class="police-ribbon" title="Assam Police Ribbon"></div>
+            <span class="rank-title">ASI</span>
+          </div>
+          <div class="dev-identity">
+            <h2>ASI Himangshu</h2>
+            <div class="dev-role">Coder</div>
+            <div class="dev-division">APRO Dibrugarh</div>
+          </div>
+        </div>
+
+        <p class="dev-summary">
+          Engineered the client-side JavaScript engine, Web Audio API synthesis pipelines, and sample-exact playhead
+          tracking interface.
+        </p>
+
+        <div class="dev-highlights">
+          <div class="highlight-item">
+            <span class="highlight-bullet">▸</span>
+            <span>Modular Vanilla ES6+ Web Audio synthesis engine</span>
+          </div>
+          <div class="highlight-item">
+            <span class="highlight-bullet">▸</span>
+            <span>Bidirectional reactive slider & manual numeric inputs</span>
+          </div>
+          <div class="highlight-item">
+            <span class="highlight-bullet">▸</span>
+            <span>Sample-exact playhead synchronization & interactive reader</span>
+          </div>
+        </div>
+
+        <div class="dev-callsign-bar">
+          <button id="btn-callsign-himangshu" class="callsign-chip" title="Play Morse Callsign">
+            <svg class="play-icon" width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5 3 19 12 5 21 5 3" />
+            </svg>
+            <span class="chip-label">Callsign: <strong>ASI HIMANGSHU</strong></span>
+          </button>
+          <span id="morse-himangshu" class="morse-text">.- ... .. .... .. -- .- -. --. ... .... ..-</span>
+        </div>
+      </article>
+
+    </main>
+
+    <!-- Clean Footer -->
+    <footer class="dev-footer">
+      <span>Assam Police Radio Organisation (Estd. 1946) • PWCC L-III Engineering Team</span>
+    </footer>
+
+  </div>
+
+  <script src="js/developers.js"></script>
+</body>
+
+</html>
