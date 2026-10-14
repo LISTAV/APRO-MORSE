@@ -216,24 +216,179 @@
             </div>
           </div>
 
-          <!-- Message Text Input Area -->
-          <div class="input-section">
-            <div class="presets-row">
-              <span style="font-family: var(--font-mono); font-size: 0.6875rem; color: var(--text-dim);">PRESETS:</span>
-              <button class="preset-chip preset-apro" data-text="APRO POLICE WIRELESS NET ESTD 1946 QRK 5 OVER">APRO Net</button>
-              <button class="preset-chip" data-text="QRK 5 QTH GUWAHATI QTR 1200 K">Q-Signals</button>
-              <button class="preset-chip" data-text="SOS">SOS</button>
-              <button class="preset-chip" data-text="CQ CQ CQ DE APRO K">CQ CQ (APRO)</button>
-              <button class="preset-chip" data-text="THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG">Pangram</button>
-              <button class="preset-chip" data-text="PARIS PARIS PARIS">PARIS Standard</button>
-              <button class="preset-chip"
-                data-text="MAYDAY MAYDAY MAYDAY DE POLICE MOBILE UNIT LAT 26 11 N LONG 91 44 E OVER">Emergency Call</button>
+          <!-- Tabbed Transmission Console (Docked 3 Slots with Telegraph Message Pad) -->
+          <div class="input-section message-pad-section">
+
+            <!-- Sleek Docked Transmission Tabs Bar -->
+            <div class="transmission-tab-bar" role="tablist" aria-label="Prepared Transmissions">
+              <div class="tx-tab-group">
+                <button type="button" class="tx-tab slot-tab active" data-slot="0" role="tab" id="slot-tab-0" aria-selected="true" title="Transmission 1 (TX 1)">
+                  <span class="tx-tab-num">TX 1</span>
+                  <span class="tx-tab-title" id="slot-title-0" style="display:none">APRO Net Preamble</span>
+                  <span class="slot-status-pill ready" id="slot-status-0">READY</span>
+                </button>
+
+                <button type="button" class="tx-tab slot-tab" data-slot="1" role="tab" id="slot-tab-1" aria-selected="false" title="Transmission 2 (TX 2)">
+                  <span class="tx-tab-num">TX 2</span>
+                  <span class="tx-tab-title" id="slot-title-1" style="display:none">Guwahati Sitrep</span>
+                  <span class="slot-status-pill ready" id="slot-status-1">READY</span>
+                </button>
+
+                <button type="button" class="tx-tab slot-tab" data-slot="2" role="tab" id="slot-tab-2" aria-selected="false" title="Transmission 3 (TX 3)">
+                  <span class="tx-tab-num">TX 3</span>
+                  <span class="tx-tab-title" id="slot-title-2" style="display:none">Emergency Call</span>
+                  <span class="slot-status-pill ready" id="slot-status-2">READY</span>
+                </button>
+
+                <button type="button" class="tx-tab slot-tab" data-slot="3" role="tab" id="slot-tab-3" aria-selected="false" title="Transmission 4 (TX 4)">
+                  <span class="tx-tab-num">TX 4</span>
+                  <span class="tx-tab-title" id="slot-title-3" style="display:none">Silchar Relay</span>
+                  <span class="slot-status-pill ready" id="slot-status-3">READY</span>
+                </button>
+              </div>
+
+              <!-- Batch Queue Controls Aligned on Tab Bar -->
+              <div class="tx-tab-controls">
+                <div class="queue-delay-wrapper" title="Silence duration pause between consecutive transmissions">
+                  <span class="delay-label">GAP:</span>
+                  <select id="select-queue-delay" class="queue-delay-select" aria-label="Inter-message pause interval">
+                    <option value="1.5">1.5s</option>
+                    <option value="2.5" selected>2.5s</option>
+                    <option value="3.5">3.5s</option>
+                    <option value="5.0">5.0s</option>
+                  </select>
+                </div>
+                <button type="button" id="btn-play-all" class="btn btn-primary btn-play-all" title="Transmit all 4 messages sequentially one by one">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                    <polygon points="5 3 14 12 5 21 5 3" />
+                    <polygon points="12 3 21 12 12 21 12 3" />
+                  </svg>
+                  PLAY ALL (1→4)
+                </button>
+              </div>
             </div>
 
-            <div class="textarea-wrapper">
-              <textarea id="input-text" class="message-textarea"
-                placeholder="Type transmission message here... Supports paragraphs, spaces, and punctuation."
-                spellcheck="false">THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG</textarea>
+            <!-- Authentic Signal Message Form (Telegraph Pad) matching Mockup.png -->
+            <div class="telegraph-form-card tab-docked" role="region" aria-label="Police Wireless Message Form">
+              <div class="msg-form-toolbar">
+              <div class="presets-row">
+                <span style="font-family: var(--font-mono); font-size: 0.6875rem; color: var(--text-dim);">PRESETS:</span>
+                <button type="button" class="preset-chip preset-apro" data-preset="apro">APRO Net</button>
+                <button type="button" class="preset-chip" data-preset="q-signals">Q-Signals</button>
+                <button type="button" class="preset-chip" data-preset="sos">SOS</button>
+                <button type="button" class="preset-chip" data-preset="cq">CQ CQ</button>
+                <button type="button" class="preset-chip" data-preset="pangram">Pangram</button>
+                <button type="button" class="preset-chip" data-preset="paris">PARIS</button>
+                <button type="button" class="preset-chip" data-preset="emergency">Emergency</button>
+              </div>
+              <div class="msg-pad-actions">
+                <div class="transmit-mode-toggle" title="Select whether to synthesize the complete wireless message pad or only the message text portion">
+                  <label class="mode-pill" title="Synthesize complete signal form">
+                    <input type="radio" name="transmit-mode" value="full" id="mode-transmit-full" checked>
+                    <span>Full Pad</span>
+                  </label>
+                  <label class="mode-pill" title="Synthesize only message text portion">
+                    <input type="radio" name="transmit-mode" value="body" id="mode-transmit-body">
+                    <span>Text Only</span>
+                  </label>
+                </div>
+                <button type="button" id="btn-clear-form" class="btn-clear-pad" title="Clear all fields in the message pad">
+                  Clear
+                </button>
+              </div>
+            </div>
+
+            <!-- Top Row: Warnings -->
+              <div class="tf-row tf-row-warnings">
+                <div class="tf-field tf-field-warnings">
+                  <input type="text" id="msg-warnings" class="tf-input" placeholder="Warnings" spellcheck="false" autocomplete="off" aria-label="Warnings">
+                </div>
+              </div>
+
+              <!-- Row 1: CALL | PRIORITY | TRANS INSTRUCTION | NR | GR -->
+              <div class="tf-row tf-grid-row1">
+                <div class="tf-field">
+                  <label for="msg-call" class="tf-label">CALL</label>
+                  <input type="text" id="msg-call" class="tf-input" placeholder="CALL" spellcheck="false" autocomplete="off">
+                </div>
+                <div class="tf-field">
+                  <label for="msg-priority" class="tf-label">PRIORITY</label>
+                  <input type="text" id="msg-priority" class="tf-input" placeholder="PRIORITY" spellcheck="false" autocomplete="off">
+                </div>
+                <div class="tf-field">
+                  <label for="msg-trans" class="tf-label">TRANS INSTRUCTION</label>
+                  <input type="text" id="msg-trans" class="tf-input" placeholder="TRANS" spellcheck="false" autocomplete="off">
+                </div>
+                <div class="tf-field">
+                  <label for="msg-nr" class="tf-label">NR</label>
+                  <input type="text" id="msg-nr" class="tf-input" placeholder="NR" spellcheck="false" autocomplete="off">
+                </div>
+                <div class="tf-field">
+                  <label for="msg-gr" class="tf-label">GR</label>
+                  <input type="text" id="msg-gr" class="tf-input" placeholder="GR" spellcheck="false" autocomplete="off" title="Group / Word count">
+                </div>
+              </div>
+
+              <!-- Row 2: TO, W, V (Stacked on Left) -->
+              <div class="tf-row tf-routing-stack">
+                <div class="tf-routing-item">
+                  <label for="msg-to" class="tf-label tf-routing-label">TO</label>
+                  <input type="text" id="msg-to" class="tf-input tf-routing-input" placeholder="TO" spellcheck="false" autocomplete="off">
+                </div>
+                <div class="tf-routing-item">
+                  <label for="msg-w" class="tf-label tf-routing-label">W</label>
+                  <input type="text" id="msg-w" class="tf-input tf-routing-input" placeholder="W" spellcheck="false" autocomplete="off">
+                </div>
+                <div class="tf-routing-item">
+                  <label for="msg-v" class="tf-label tf-routing-label">V</label>
+                  <input type="text" id="msg-v" class="tf-input tf-routing-input" placeholder="V" spellcheck="false" autocomplete="off">
+                </div>
+              </div>
+
+              <!-- Row 3: ORG No. | DATE | IN REPLY TO | DATE | SECURITY CLASSIFICATION -->
+              <div class="tf-row tf-grid-row3">
+                <div class="tf-field">
+                  <label for="msg-org-no" class="tf-label">ORG No.</label>
+                  <input type="text" id="msg-org-no" class="tf-input" placeholder="CALL" spellcheck="false" autocomplete="off" title="Originator Reference Number">
+                </div>
+                <div class="tf-field">
+                  <label for="msg-date-1" class="tf-label">DATE</label>
+                  <input type="text" id="msg-date-1" class="tf-input" placeholder="PRIORITY" spellcheck="false" autocomplete="off" title="Date">
+                </div>
+                <div class="tf-field">
+                  <label for="msg-in-reply-to" class="tf-label">IN REPLY TO</label>
+                  <input type="text" id="msg-in-reply-to" class="tf-input" placeholder="TRANS" spellcheck="false" autocomplete="off" title="In Reply To">
+                </div>
+                <div class="tf-field">
+                  <label for="msg-date-2" class="tf-label">DATE</label>
+                  <input type="text" id="msg-date-2" class="tf-input" placeholder="DATE" spellcheck="false" autocomplete="off" title="Reply Date">
+                </div>
+                <div class="tf-field tf-security-col">
+                  <label for="msg-security" class="tf-label">SECURITY CLASSIFICATION</label>
+                  <input type="text" id="msg-security" class="tf-input" placeholder="SECURITY CLASSIFICATION" spellcheck="false" autocomplete="off">
+                </div>
+              </div>
+
+              <!-- Row 4: MESSAGE TEXT PROTION (Main Textarea) -->
+              <div class="tf-row tf-row-textarea">
+                <div class="tf-field tf-field-textarea">
+                  <textarea id="input-text" class="message-textarea tf-textarea"
+                    placeholder="MESSAGE TEXT PROTION"
+                    spellcheck="false">THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG</textarea>
+                </div>
+              </div>
+
+              <!-- Row 5: T.O.O and T.H.I (Bottom Left Stack) -->
+              <div class="tf-row tf-footer-stack">
+                <div class="tf-field tf-footer-field">
+                  <label for="msg-too" class="tf-label">T.O.O</label>
+                  <input type="text" id="msg-too" class="tf-input tf-footer-input" placeholder="T.O.O" spellcheck="false" autocomplete="off">
+                </div>
+                <div class="tf-field tf-footer-field">
+                  <label for="msg-thi" class="tf-label">T.H.I</label>
+                  <input type="text" id="msg-thi" class="tf-input tf-footer-input" placeholder="T.H.I" spellcheck="false" autocomplete="off">
+                </div>
+              </div>
             </div>
 
             <div class="textarea-footer">

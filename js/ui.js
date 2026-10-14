@@ -33,7 +33,51 @@
     valVolume: document.getElementById('val-volume'),
     valUnitTime: document.getElementById('val-unit-time'),
 
+    // Telegraph message form fields (Mockup.png)
+    msgWarnings: document.getElementById('msg-warnings'),
+    msgCall: document.getElementById('msg-call'),
+    msgPriority: document.getElementById('msg-priority'),
+    msgTrans: document.getElementById('msg-trans'),
+    msgNr: document.getElementById('msg-nr'),
+    msgGr: document.getElementById('msg-gr'),
+    msgTo: document.getElementById('msg-to'),
+    msgW: document.getElementById('msg-w'),
+    msgV: document.getElementById('msg-v'),
+    msgOrgNo: document.getElementById('msg-org-no'),
+    msgDate1: document.getElementById('msg-date-1'),
+    msgInReplyTo: document.getElementById('msg-in-reply-to'),
+    msgDate2: document.getElementById('msg-date-2'),
+    msgSecurity: document.getElementById('msg-security'),
     inputText: document.getElementById('input-text'),
+    msgToo: document.getElementById('msg-too'),
+    msgThi: document.getElementById('msg-thi'),
+    btnClearForm: document.getElementById('btn-clear-form'),
+    modeTransmitFull: document.getElementById('mode-transmit-full'),
+    modeTransmitBody: document.getElementById('mode-transmit-body'),
+
+    // Batch queue & 4 slots elements (TX 1 to TX 4)
+    btnPlayAll: document.getElementById('btn-play-all'),
+    selectQueueDelay: document.getElementById('select-queue-delay'),
+    slotTabs: document.querySelectorAll('.slot-tab'),
+    slotStatusPills: [
+      document.getElementById('slot-status-0'),
+      document.getElementById('slot-status-1'),
+      document.getElementById('slot-status-2'),
+      document.getElementById('slot-status-3')
+    ],
+    slotTitles: [
+      document.getElementById('slot-title-0'),
+      document.getElementById('slot-title-1'),
+      document.getElementById('slot-title-2'),
+      document.getElementById('slot-title-3')
+    ],
+    slotMetas: [
+      document.getElementById('slot-meta-0'),
+      document.getElementById('slot-meta-1'),
+      document.getElementById('slot-meta-2'),
+      document.getElementById('slot-meta-3')
+    ],
+
     charCountInfo: document.getElementById('char-count-info'),
     readerBox: document.getElementById('reader-box'),
 
@@ -261,6 +305,85 @@
     });
   }
 
+  /**
+   * Updates a transmission slot's UI card in the queue tab bar.
+   * @param {number} slotIndex (0, 1, or 2)
+   * @param {Object} data { title, duration, words, status }
+   */
+  function updateSlotTabUI(slotIndex, data) {
+    if (dom.slotTitles && dom.slotTitles[slotIndex] && data.title) {
+      dom.slotTitles[slotIndex].textContent = data.title;
+    }
+    if (dom.slotMetas && dom.slotMetas[slotIndex]) {
+      const dur = data.duration ? formatTime(data.duration) : '--:--';
+      dom.slotMetas[slotIndex].textContent = `${dur} • ${data.words || 0} words`;
+    }
+    if (dom.slotStatusPills && dom.slotStatusPills[slotIndex]) {
+      const pill = dom.slotStatusPills[slotIndex];
+      pill.className = 'slot-status-pill';
+      if (data.status === 'transmitting') {
+        pill.classList.add('transmitting');
+        pill.textContent = 'TRANSMITTING';
+      } else if (data.status === 'done') {
+        pill.classList.add('done');
+        pill.textContent = 'DONE';
+      } else if (data.status === 'empty') {
+        pill.textContent = 'EMPTY';
+      } else {
+        pill.classList.add('ready');
+        pill.textContent = 'READY';
+      }
+    }
+  }
+
+  function setActiveSlotTab(slotIndex) {
+    document.querySelectorAll('.slot-tab').forEach((tab, idx) => {
+      if (idx === slotIndex) {
+        tab.classList.add('active');
+        tab.setAttribute('aria-selected', 'true');
+      } else {
+        tab.classList.remove('active');
+        tab.setAttribute('aria-selected', 'false');
+      }
+    });
+  }
+
+  function setTransmittingSlot(slotIndex) {
+    document.querySelectorAll('.slot-tab').forEach((tab, idx) => {
+      if (idx === slotIndex) {
+        tab.classList.add('transmitting');
+      } else {
+        tab.classList.remove('transmitting');
+      }
+    });
+    if (dom.btnPlayAll) {
+      dom.btnPlayAll.classList.add('transmitting');
+      dom.btnPlayAll.innerHTML = `
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+          <rect x="6" y="4" width="4" height="16" />
+          <rect x="14" y="4" width="4" height="16" />
+        </svg>
+        TRANSMITTING...
+      `;
+    }
+  }
+
+  function clearTransmittingSlots() {
+    document.querySelectorAll('.slot-tab').forEach(tab => {
+      tab.classList.remove('transmitting');
+    });
+    if (dom.btnPlayAll) {
+      dom.btnPlayAll.classList.remove('transmitting');
+      dom.btnPlayAll.innerHTML = `
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+          <polygon points="5 3 14 12 5 21 5 3" />
+          <polygon points="12 3 21 12 12 21 12 3" />
+        </svg>
+        PLAY ALL (1→4)
+      `;
+    }
+  }
+
   // Export UI interface
   global.MorseUI = {
     dom,
@@ -271,7 +394,11 @@
     setRenderState,
     showToast,
     formatTime,
-    renderReferenceTable
+    renderReferenceTable,
+    updateSlotTabUI,
+    setActiveSlotTab,
+    setTransmittingSlot,
+    clearTransmittingSlots
   };
 
 })(typeof window !== 'undefined' ? window : this);

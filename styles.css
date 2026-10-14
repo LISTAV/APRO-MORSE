@@ -856,11 +856,255 @@ body {
   cursor: pointer;
 }
 
-/* Message Input Box */
+/* ==========================================================================
+   TRANSMISSION CONSOLE: DOCKED TABS (TX 1, TX 2, TX 3)
+   ========================================================================== */
+.message-pad-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+}
+
+/* Tab Bar sitting flush on top of the message pad */
+.transmission-tab-bar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--border-panel);
+  padding: 0 0.25rem;
+  margin-bottom: -1px;
+  position: relative;
+  z-index: 2;
+  flex-wrap: wrap;
+}
+
+.tx-tab-group {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.tx-tab {
+  background: #070d18;
+  border: 1px solid var(--border-panel);
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  padding: 0.45rem 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  position: relative;
+  color: var(--text-muted);
+  outline: none;
+}
+
+.tx-tab:hover {
+  background: #0d1524;
+  color: #fff;
+  border-color: #3b82f650;
+}
+
+.tx-tab.active {
+  background: #090e19;
+  border-color: var(--border-panel);
+  border-top: 2px solid var(--amber-500);
+  padding-top: calc(0.45rem - 1px);
+  color: #fff;
+  box-shadow: 0 -4px 12px rgba(245, 158, 11, 0.15);
+  z-index: 3;
+}
+
+.tx-tab.active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 3px;
+  background: #090e19; /* Blends seamlessly into docked card below */
+}
+
+.tx-tab.transmitting {
+  border-top-color: var(--emerald-400);
+  background: #081714;
+  animation: tab-pulse-glow 1s infinite alternate;
+}
+
+@keyframes tab-pulse-glow {
+  from { box-shadow: 0 -2px 8px rgba(52, 211, 153, 0.3); }
+  to { box-shadow: 0 -4px 18px rgba(245, 158, 11, 0.5); }
+}
+
+.tx-tab-num {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: var(--text-dim);
+}
+
+.tx-tab.active .tx-tab-num {
+  color: var(--amber-400);
+}
+
+.tx-tab-title {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  max-width: 140px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.slot-status-pill {
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  font-weight: 700;
+  padding: 0.08rem 0.3rem;
+  border-radius: 3px;
+  background: rgba(148, 163, 184, 0.15);
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+
+.slot-status-pill.ready {
+  background: rgba(34, 197, 94, 0.15);
+  color: var(--emerald-400);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.slot-status-pill.transmitting {
+  background: rgba(245, 158, 11, 0.2);
+  color: var(--amber-400);
+  border: 1px solid var(--amber-500);
+  animation: pulse-badge 1s infinite alternate;
+}
+
+@keyframes pulse-badge {
+  from { opacity: 0.7; }
+  to { opacity: 1; text-shadow: 0 0 6px var(--amber-glow); }
+}
+
+.slot-status-pill.done {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+/* Controls inside tab header bar */
+.tx-tab-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.queue-delay-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: #050811;
+  border: 1px solid var(--border-panel);
+  border-radius: var(--radius-sm);
+  padding: 0.2rem 0.45rem;
+}
+
+.delay-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--text-dim);
+}
+
+.queue-delay-select {
+  background: transparent;
+  border: none;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--amber-400);
+  outline: none;
+  cursor: pointer;
+}
+
+.queue-delay-select option {
+  background: #0d131f;
+  color: #fff;
+}
+
+.btn-play-all {
+  background: linear-gradient(135deg, #d97706, #f59e0b);
+  color: #000 !important;
+  font-weight: 800;
+  border: 1px solid var(--amber-400);
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 0 10px var(--amber-glow);
+  transition: all 0.15s ease;
+  font-size: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.btn-play-all:hover {
+  background: linear-gradient(135deg, #f59e0b, #fbbf24);
+  box-shadow: 0 0 16px var(--amber-flare);
+  transform: translateY(-1px);
+}
+
+.btn-play-all.transmitting {
+  background: linear-gradient(135deg, #10b981, #34d399);
+  border-color: #6ee7b7;
+  color: #000 !important;
+  animation: pulse-transmitting 1.2s infinite;
+}
+
+@keyframes pulse-transmitting {
+  0%, 100% { box-shadow: 0 0 8px rgba(52, 211, 153, 0.4); }
+  50% { box-shadow: 0 0 20px rgba(52, 211, 153, 0.9); }
+}
+
+/* Docked Form Card */
+.telegraph-form-card.tab-docked {
+  border-top-left-radius: 0;
+  border-top: 1px solid var(--border-panel);
+  margin-top: 0;
+}
+
+@media (max-width: 768px) {
+  .transmission-tab-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+  .tx-tab-controls {
+    justify-content: flex-end;
+  }
+  .tx-tab-title {
+    max-width: 80px;
+  }
+}
+
+/* Message Input Box & Telegraph Form */
 .input-section {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+}
+
+.msg-form-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
 .presets-row {
@@ -889,29 +1133,299 @@ body {
   border-color: var(--amber-500);
 }
 
-.textarea-wrapper {
-  position: relative;
+.msg-pad-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.message-textarea {
-  width: 100%;
-  height: 160px;
-  background: var(--bg-inset);
-  border: 1px solid var(--border-subtle);
+.transmit-mode-toggle {
+  display: inline-flex;
+  background: #070d18;
+  border: 1px solid var(--border-panel);
+  border-radius: var(--radius-sm);
+  padding: 2px;
+  gap: 2px;
+}
+
+.mode-pill {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.mode-pill input[type="radio"] {
+  display: none;
+}
+
+.mode-pill:has(input:checked) {
+  background: var(--amber-500);
+  color: #000;
+  font-weight: 700;
+  box-shadow: 0 0 6px var(--amber-glow);
+}
+
+.btn-clear-pad {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-sm);
+  background: #070d18;
+  border: 1px solid var(--border-panel);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-clear-pad:hover {
+  border-color: var(--red-400);
+  color: var(--red-400);
+  background: rgba(248, 113, 113, 0.12);
+}
+
+/* Authentic Telegraph Message Pad Form matching Mockup.png */
+.telegraph-form-card {
+  background: #090e19;
+  border: 1px solid var(--border-panel);
   border-radius: var(--radius-md);
-  padding: 1rem;
-  color: var(--text-main);
+  padding: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5), 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+
+.telegraph-form-card.tab-docked {
+  border-top-left-radius: 0;
+}
+
+.tf-row {
+  display: flex;
+  width: 100%;
+}
+
+.tf-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.tf-label {
+  font-family: var(--font-mono);
+  font-size: 0.5875rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: #94a3b8;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tf-input {
+  width: 100%;
+  background: #060a12;
+  border: 1px solid #27354f;
+  border-radius: 4px;
+  padding: 0.35rem 0.55rem;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #f1f5f9;
+  outline: none;
+  transition: all 0.15s ease;
+}
+
+.tf-input::placeholder {
+  color: #64748b;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.tf-input:hover {
+  border-color: #3b82f650;
+}
+
+.tf-input:focus {
+  border-color: var(--amber-500);
+  box-shadow: 0 0 8px var(--amber-glow);
+  background: #030712;
+  color: #fff;
+}
+
+/* Warnings Field at Top Left */
+.tf-row-warnings {
+  justify-content: flex-start;
+}
+
+.tf-field-warnings {
+  width: 160px;
+}
+
+.tf-field-warnings .tf-input {
+  font-weight: 700;
+  color: var(--amber-400);
+  border-color: rgba(245, 158, 11, 0.35);
+}
+
+.tf-field-warnings .tf-input:focus {
+  border-color: var(--amber-500);
+}
+
+/* Row 1 Grid: CALL, PRIORITY, TRANS INSTRUCTION, NR, GR */
+.tf-grid-row1 {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr 1.5fr 0.75fr 0.75fr;
+  gap: 0.55rem;
+  align-items: flex-end;
+}
+
+/* Row 3 Grid: ORG No., DATE, IN REPLY TO, DATE, SECURITY CLASSIFICATION */
+.tf-grid-row3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.1fr 0.9fr 1.7fr;
+  gap: 0.55rem;
+  align-items: flex-end;
+}
+
+.tf-grid-5 {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.65rem;
+  align-items: flex-end;
+}
+
+.tf-security-col {
+  grid-column: span 1;
+}
+
+/* Routing Stack: TO, W, V */
+.tf-routing-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  align-items: flex-start;
+}
+
+.tf-routing-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 240px;
+}
+
+.tf-routing-label {
+  min-width: 24px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #e2e8f0;
+}
+
+.tf-routing-input {
+  flex: 1;
+  max-width: 180px;
+}
+
+/* Main Message Text Area */
+.tf-row-textarea {
+  width: 100%;
+}
+
+.tf-field-textarea {
+  width: 100%;
+}
+
+.tf-textarea {
+  width: 100%;
+  height: 155px;
+  min-height: 130px;
+  resize: vertical;
+  background: #060a12;
+  border: 1px solid #27354f;
+  border-radius: 4px;
+  padding: 0.85rem;
   font-family: var(--font-mono);
   font-size: 0.9375rem;
   line-height: 1.6;
-  resize: vertical;
+  color: #f8fafc;
   outline: none;
-  transition: border-color 0.15s ease;
+  transition: all 0.15s ease;
 }
 
-.message-textarea:focus {
+.tf-textarea::placeholder {
+  color: #64748b;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.tf-textarea:hover {
+  border-color: #3b82f650;
+}
+
+.tf-textarea:focus {
   border-color: var(--amber-500);
-  box-shadow: 0 0 0 1px var(--amber-500);
+  box-shadow: 0 0 10px var(--amber-glow);
+  background: #030712;
+}
+
+/* Footer Stack: T.O.O & T.H.I */
+.tf-footer-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  align-items: flex-start;
+}
+
+.tf-footer-field {
+  width: 150px;
+}
+
+.tf-footer-input {
+  width: 100%;
+}
+
+/* Responsive Rules for Telegraph Pad */
+@media (max-width: 768px) {
+  .tf-grid-row1,
+  .tf-grid-row3,
+  .tf-grid-5 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .tf-security-col {
+    grid-column: span 2;
+  }
+  .tf-routing-item {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .tf-grid-row1,
+  .tf-grid-row3,
+  .tf-grid-5 {
+    grid-template-columns: 1fr;
+  }
+  .tf-security-col {
+    grid-column: span 1;
+  }
+  .telegraph-form-card {
+    padding: 0.75rem;
+  }
+  .msg-form-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }
 
 .textarea-footer {
