@@ -961,11 +961,18 @@
     });
   }
 
-  // Inter-message Pause Duration Selector
-  if (dom.selectQueueDelay) {
-    dom.selectQueueDelay.addEventListener('change', (e) => {
-      state.interMessageGapSeconds = parseFloat(e.target.value) || 2.5;
-      ui.showToast(`Inter-message gap set to ${state.interMessageGapSeconds}s`);
+  // Inter-message Pause Duration (GAP input field in seconds)
+  const gapInput = dom.inputQueueDelay || dom.selectQueueDelay;
+  if (gapInput) {
+    const onGapChange = (e) => {
+      let val = parseFloat(e.target.value);
+      if (isNaN(val) || val < 0) val = 0;
+      state.interMessageGapSeconds = val;
+    };
+    gapInput.addEventListener('input', onGapChange);
+    gapInput.addEventListener('change', (e) => {
+      onGapChange(e);
+      ui.showToast(`Pause before next TX set to ${state.interMessageGapSeconds}s`);
     });
   }
 
@@ -1209,6 +1216,14 @@
         duration: slot.duration,
         words: slot.words,
         status: slot.status
+      });
+    }
+
+    // Initialize Theme Mode (Light / Dark)
+    ui.initTheme();
+    if (dom.btnThemeToggle) {
+      dom.btnThemeToggle.addEventListener('click', () => {
+        ui.toggleTheme();
       });
     }
 

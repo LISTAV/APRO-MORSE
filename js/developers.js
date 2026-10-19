@@ -163,6 +163,34 @@
     if (btnHim) {
       btnHim.addEventListener('click', () => playCallsign('himangshu'));
     }
+
+    // Theme Toggle Handler
+    const btnTheme = document.getElementById('btn-theme-toggle');
+    const themeLabel = document.getElementById('theme-toggle-label');
+
+    function updateThemeBtn() {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      if (themeLabel) themeLabel.textContent = isLight ? 'DARK' : 'LIGHT';
+      if (btnTheme) btnTheme.title = isLight ? 'Switch to Dark Mode' : 'Switch to Light Mode';
+    }
+
+    updateThemeBtn();
+
+    if (btnTheme) {
+      btnTheme.addEventListener('click', () => {
+        const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+        const next = isLight ? 'dark' : 'light';
+        if (next === 'light') {
+          document.documentElement.setAttribute('data-theme', 'light');
+        } else {
+          document.documentElement.removeAttribute('data-theme');
+        }
+        try {
+          localStorage.setItem('apro_morse_theme', next);
+        } catch (e) {}
+        updateThemeBtn();
+      });
+    }
   });
 
 })();

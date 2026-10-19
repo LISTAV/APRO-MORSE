@@ -242,3 +242,69 @@
   border-top: 1px solid var(--border-subtle);
   margin-top: auto;
 }
+
+/* ==========================================================================
+   DEVELOPERS PAGE LIGHT MODE OVERRIDES
+   ========================================================================== */
+[data-theme="light"] .dev-card {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.08);
+}
+
+[data-theme="light"] .dev-card:hover {
+  box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.14), 0 0 12px rgba(217, 119, 6, 0.08);
+}
+
+[data-theme="light"] .dev-identity h2 {
+  color: #0f172a;
+}
+
+[data-theme="light"] .dev-role {
+  color: #b45309;
+}
+
+[data-theme="light"] .dev-division {
+  color: #64748b;
+}
+
+[data-theme="light"] .dev-summary {
+  color: #334155;
+}
+
+[data-theme="light"] .dev-highlights {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+}
+
+[data-theme="light"] .highlight-item {
+  color: #1e293b;
+}
+
+[data-theme="light"] .highlight-bullet {
+  color: #d97706;
+}
+
+[data-theme="light"] .callsign-chip {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #334155;
+}
+
+[data-theme="light"] .callsign-chip:hover {
+  background: #fffbeb;
+  border-color: #d97706;
+  color: #b45309;
+}
+
+[data-theme="light"] .morse-text {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #b45309;
+}
+
+[data-theme="light"] .dev-footer {
+  border-color: #cbd5e1;
+  color: #64748b;
+}
+

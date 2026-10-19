@@ -55,9 +55,14 @@
     modeTransmitFull: document.getElementById('mode-transmit-full'),
     modeTransmitBody: document.getElementById('mode-transmit-body'),
 
+    // Theme Toggle
+    btnThemeToggle: document.getElementById('btn-theme-toggle'),
+    themeToggleLabel: document.getElementById('theme-toggle-label'),
+
     // Batch queue & 4 slots elements (TX 1 to TX 4)
     btnPlayAll: document.getElementById('btn-play-all'),
-    selectQueueDelay: document.getElementById('select-queue-delay'),
+    inputQueueDelay: document.getElementById('input-queue-delay'),
+    selectQueueDelay: document.getElementById('input-queue-delay'),
     slotTabs: document.querySelectorAll('.slot-tab'),
     slotStatusPills: [
       document.getElementById('slot-status-0'),
@@ -384,6 +389,47 @@
     }
   }
 
+  /**
+   * Initializes theme from localStorage or system preference.
+   */
+  function initTheme() {
+    let saved = null;
+    try {
+      saved = localStorage.getItem('apro_morse_theme');
+    } catch (e) {}
+    applyTheme(saved === 'light' ? 'light' : 'dark');
+  }
+
+  /**
+   * Applies the theme to the document and updates button states.
+   * @param {'light'|'dark'} theme
+   */
+  function applyTheme(theme) {
+    if (theme === 'light') {
+      document.documentElement.setAttribute('data-theme', 'light');
+      if (dom.themeToggleLabel) dom.themeToggleLabel.textContent = 'DARK';
+      if (dom.btnThemeToggle) dom.btnThemeToggle.title = 'Switch to Dark Mode';
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+      if (dom.themeToggleLabel) dom.themeToggleLabel.textContent = 'LIGHT';
+      if (dom.btnThemeToggle) dom.btnThemeToggle.title = 'Switch to Light Mode';
+    }
+  }
+
+  /**
+   * Toggles between light and dark modes.
+   */
+  function toggleTheme() {
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    const nextTheme = isLight ? 'dark' : 'light';
+    try {
+      localStorage.setItem('apro_morse_theme', nextTheme);
+    } catch (e) {}
+    applyTheme(nextTheme);
+    showToast(`Switched to ${nextTheme === 'light' ? 'Light' : 'Dark'} Mode`);
+    return nextTheme;
+  }
+
   // Export UI interface
   global.MorseUI = {
     dom,
@@ -398,7 +444,10 @@
     updateSlotTabUI,
     setActiveSlotTab,
     setTransmittingSlot,
-    clearTransmittingSlots
+    clearTransmittingSlots,
+    initTheme,
+    applyTheme,
+    toggleTheme
   };
 
 })(typeof window !== 'undefined' ? window : this);

@@ -9,6 +9,16 @@
     content="Assam Police Radio Organisation (APRO) Morse code telegraphy synthesizer with International standard compliance, offline Web Audio PCM WAV rendering, and sample-exact playhead tracking.">
   <link rel="icon" type="image/png" href="assets/apro-logo.png">
   <link rel="stylesheet" href="styles.css">
+  <script>
+    (function () {
+      try {
+        const savedTheme = localStorage.getItem('apro_morse_theme');
+        if (savedTheme === 'light') {
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      } catch (e) {}
+    })();
+  </script>
 </head>
 
 <body>
@@ -36,6 +46,24 @@
       </div>
 
       <div class="header-actions">
+        <!-- Theme Mode Toggle Button -->
+        <button id="btn-theme-toggle" class="btn btn-outline btn-theme-toggle" title="Switch to Light Mode" aria-label="Toggle Light and Dark Mode">
+          <svg class="theme-icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg class="theme-icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          <span id="theme-toggle-label" class="theme-label">LIGHT</span>
+        </button>
         <button id="btn-copy-morse" class="btn btn-outline" title="Copy formatted Morse code to clipboard">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
@@ -249,14 +277,10 @@
 
               <!-- Batch Queue Controls Aligned on Tab Bar -->
               <div class="tx-tab-controls">
-                <div class="queue-delay-wrapper" title="Silence duration pause between consecutive transmissions">
-                  <span class="delay-label">GAP:</span>
-                  <select id="select-queue-delay" class="queue-delay-select" aria-label="Inter-message pause interval">
-                    <option value="1.5">1.5s</option>
-                    <option value="2.5" selected>2.5s</option>
-                    <option value="3.5">3.5s</option>
-                    <option value="5.0">5.0s</option>
-                  </select>
+                <div class="queue-delay-wrapper" title="Seconds to pause before transmitting the next TX">
+                  <label for="input-queue-delay" class="delay-label">GAP:</label>
+                  <input type="number" id="input-queue-delay" class="queue-delay-input" min="0" max="60" step="0.5" value="2.5" aria-label="Seconds to pause before playing next transmission">
+                  <span class="delay-unit">s</span>
                 </div>
                 <button type="button" id="btn-play-all" class="btn btn-primary btn-play-all" title="Transmit all 4 messages sequentially one by one">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
